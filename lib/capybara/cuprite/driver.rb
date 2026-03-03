@@ -40,6 +40,9 @@ module Capybara
         unless @options[:browser_options][:"remote-allow-origins"]
           @options[:browser_options].merge!("remote-allow-origins": "*")
         end
+        if ENV["NO_SANDBOX"] == "true"
+          @options[:browser_options].merge!("no-sandbox" => nil, "disable-setuid-sandbox" => nil)
+        end
 
         super()
       end

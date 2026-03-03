@@ -104,6 +104,11 @@ RSpec.configure do |config|
     example.run
 
     if ENV.fetch("CI", nil) && example.exception
+      if example.exception.is_a?(Ferrum::ProcessTimeoutError)
+        # Show the reason for the timeout.
+        puts example.exception.output
+        raise example.exception
+      end
       session = @session || TestSessions::Cuprite
       save_exception_artifacts(session.driver.browser, example.metadata)
     end
